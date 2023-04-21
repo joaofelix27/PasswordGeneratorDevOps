@@ -1,12 +1,26 @@
 version: '3.8'
 
 services:
-  dev:
-    build: 
+  react:
+    container_name: react
+    build:
       context: ./front-end
       dockerfile: Dockerfile
     volumes:
-      - ./:/app
+      - build_react:/var/www/html
     ports:
       - '5173:3000'
-    command: yarn dev
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    restart: always
+    ports:
+      - 120:80
+    volumes:
+      - build_react:/var/www/html
+    depends_on:
+      - react
+
+volumes:
+  build_react:
