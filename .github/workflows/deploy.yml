@@ -28,7 +28,11 @@ jobs:
           directory: front-end
           file_name: .env
           fail_on_empty: true
-      - name: Build
+      - name: Get containers down
+        run: docker compose down
+      - name: Delete react docker volume
+        run: docker volume rm passwordgeneratordevops_build_react
+      - name: Build docker images
         run: docker compose build
-      - name: Run
-        run: docker compose down && docker compose up -d
+      - name: Run docker compose up
+        run: 
