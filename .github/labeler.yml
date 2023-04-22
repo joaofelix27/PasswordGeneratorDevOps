@@ -1,0 +1,12 @@
+# Add 'Devops' label to any root file changes
+devops:
+  - ./*
+  - nginx/**/*
+
+# Add 'backend' label to any change within the 'backend' package
+backend:
+  - backend/**/*
+
+# Add 'frontend' label to any change within the 'frontend' package
+frontend:
+  - frontend/**/*
