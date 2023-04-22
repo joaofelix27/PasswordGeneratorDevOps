@@ -14,4 +14,6 @@ RUN mkdir -p /var/www/html
 
 RUN mv dist/* /var/www/html
 
-CMD ["yarn","dev"]
+WORKDIR /   
+
+RUN rm -rf /tmp/react

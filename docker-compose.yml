@@ -1,12 +1,53 @@
 version: '3.8'
 
 services:
-  dev:
-    build: 
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - 5433:5432
+    env_file:
+      - back-end/.env
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+
+  react:
+    container_name: react
+    build:
       context: ./front-end
       dockerfile: Dockerfile
     volumes:
-      - ./:/app
+      - build_react:/var/www/html
+    env_file:
+      - front-end/.env
     ports:
-      - '5173:3000'
-    command: yarn dev
+      - '3000:3000'
+
+  node:
+    container_name: node
+    build: ./back-end
+    command: npm start
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgres
+    env_file:
+      - back-end/.env
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - build_react:/var/www/html
+    depends_on:
+      - react
+      - node
+      - postgres
+
+volumes:
+  postgres-volume:  
+  build_react:
